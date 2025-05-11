@@ -1,0 +1,192 @@
+[English](/README.md) | [ 简体中文](/README_zh-Hans.md) | [繁體中文](/README_zh-Hant.md) | [日本語](/README_ja.md) | [Deutsch](/README_de.md) | [한국어](/README_ko.md)
+
+<div align=center>
+<img src="/doc/image/logo.svg" width="400" height="150"/>
+</div>
+
+## LibDriver PMSX003
+[![MISRA](https://img.shields.io/badge/misra-compliant-brightgreen.svg)](/misra/README.md) [![API](https://img.shields.io/badge/api-reference-blue.svg)](https://www.libdriver.com/docs/pmsx003/index.html) [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](/LICENSE) 
+
+PMSX003 ist ein digitaler und universeller Partikelkonzentrationssensor, mit dem sich die Anzahl der Schwebeteilchen in der Luft, also die Partikelkonzentration, ermitteln und digital ausgeben lässt. Dieser Sensor kann in verschiedene Instrumente zur Messung der Schwebeteilchenkonzentration in der Luft oder andere Umweltschutzgeräte integriert werden, um zeitnah korrekte Konzentrationsdaten zu liefern.
+
+LibDriver PMSX003 ist ein vollfunktionaler Treiber für PMSX003, der von LibDriver veröffentlicht wurde. Er bietet unter anderem die Möglichkeit zur Messung der Luftqualität. LibDriver ist MISRA-kompatibel.
+
+### Inhaltsverzeichnis
+
+  - [Anweisung](#Anweisung)
+  - [Installieren](#Installieren)
+  - [Nutzung](#Nutzung)
+    - [example basic](#example-basic)
+  - [Dokument](#Dokument)
+  - [Beitrag](#Beitrag)
+  - [Lizenz](#Lizenz)
+  - [Kontaktieren Sie uns](#Kontaktieren-Sie-uns)
+
+### Anweisung
+
+/src enthält LibDriver PMSX003-Quelldateien.
+
+/interface enthält die plattformunabhängige Vorlage LibDriver PMSX003 UART.
+
+/test enthält den Testcode des LibDriver PMSX003-Treibers und dieser Code kann die erforderliche Funktion des Chips einfach testen.
+
+/example enthält LibDriver PMSX003-Beispielcode.
+
+/doc enthält das LibDriver PMSX003-Offlinedokument.
+
+/Datenblatt enthält PMSX003-Datenblatt.
+
+/project enthält den allgemeinen Beispielcode für Linux- und MCU-Entwicklungsboards. Alle Projekte verwenden das Shell-Skript, um den Treiber zu debuggen, und die detaillierten Anweisungen finden Sie in der README.md jedes Projekts.
+
+/misra enthält die Ergebnisse des LibDriver MISRA Code Scans.
+
+### Installieren
+
+Verweisen Sie auf eine plattformunabhängige UART-Schnittstellenvorlage und stellen Sie Ihren Plattform-UART-Treiber fertig.
+
+Fügen Sie das Verzeichnis /src, den Schnittstellentreiber für Ihre Plattform und Ihre eigenen Treiber zu Ihrem Projekt hinzu. Wenn Sie die Standardbeispieltreiber verwenden möchten, fügen Sie das Verzeichnis /example zu Ihrem Projekt hinzu.
+
+### Nutzung
+
+Sie können auf die Beispiele im Verzeichnis /example zurückgreifen, um Ihren eigenen Treiber zu vervollständigen. Wenn Sie die Standardprogrammierbeispiele verwenden möchten, erfahren Sie hier, wie Sie diese verwenden.
+
+#### example basic
+
+```C
+#include "driver_pmsx003_basic.h"
+
+uint8_t res;
+uint32_t i;
+
+/* init */
+res = pmsx003_basic_init();
+if (res != 0)
+{
+    return 1;
+}
+
+...
+    
+for (i = 0; i < 3; i++)
+{
+    pmsx003_data_t data;
+
+    /* delay 1000ms */
+    pmsx003_interface_delay_ms(1000);
+
+    /* read data */
+    res = pmsx003_basic_read(&data);
+    if (res != 0)
+    {
+        (void)pmsx003_basic_deinit();
+
+        return 1;
+    }
+
+    /* output */
+    pmsx003_interface_debug_print("pmsx003: %d/%d.\n", i + 1, 3);
+    pmsx003_interface_debug_print("pmsx003: pm1p0 standard is %d ug/m3.\n", data.pm1p0_standard_ug_m3);
+    pmsx003_interface_debug_print("pmsx003: pm2p5 standard is %d ug/m3.\n", data.pm2p5_standard_ug_m3);
+    pmsx003_interface_debug_print("pmsx003: pm10 standard is %d ug/m3.\n", data.pm10_standard_ug_m3);
+    pmsx003_interface_debug_print("pmsx003: pm1p0 atmospheric is %d ug/m3.\n", data.pm1p0_atmospheric_ug_m3);
+    pmsx003_interface_debug_print("pmsx003: pm2p5 atmospheric is %d ug/m3.\n", data.pm2p5_atmospheric_ug_m3);
+    pmsx003_interface_debug_print("pmsx003: pm10 atmospheric is %d ug/m3.\n", data.pm10_atmospheric_ug_m3);
+    pmsx003_interface_debug_print("pmsx003: beyond 0p3 um is %d.\n", data.beyond_0p3um);
+    pmsx003_interface_debug_print("pmsx003: beyond 0p5 um is %d.\n", data.beyond_0p5um);
+    pmsx003_interface_debug_print("pmsx003: beyond 1p0 um is %d.\n", data.beyond_1p0um);
+    pmsx003_interface_debug_print("pmsx003: beyond 2p5 um is %d.\n", data.beyond_2p5um);
+    pmsx003_interface_debug_print("pmsx003: beyond 5p0 um is %d.\n", data.beyond_5p0um);
+    pmsx003_interface_debug_print("pmsx003: beyond 10 um is %d.\n", data.beyond_10um);
+    pmsx003_interface_debug_print("pmsx003: version is 0x%02X.\n", data.version);
+    pmsx003_interface_debug_print("pmsx003: error code is 0x%02X.\n", data.error_code);
+    
+    ...
+}
+
+...
+    
+/* sleep */
+res = pmsx003_basic_sleep();
+if (res != 0)
+{
+    (void)pmsx003_basic_deinit();
+    
+    return 1;
+}
+
+...
+    
+/* wake up */
+res = pmsx003_basic_wake_up();
+if (res != 0)
+{
+    (void)pmsx003_basic_deinit();
+    
+    return 1;
+}
+
+...
+    
+/* deinit */
+(void)pmsx003_basic_deinit();
+
+return 0;
+```
+
+### Dokument
+
+Online-Dokumente: [https://www.libdriver.com/docs/pmsx003/index.html](https://www.libdriver.com/docs/pmsx003/index.html).
+
+Offline-Dokumente: /doc/html/index.html.
+
+### Beitrag
+
+Bitte beachten Sie CONTRIBUTING.md.
+
+### Lizenz
+
+Urheberrechte © (c) 2015 - Gegenwart LibDriver Alle Rechte vorbehalten
+
+
+
+Die MIT-Lizenz (MIT)
+
+
+
+Hiermit wird jeder Person kostenlos die Erlaubnis erteilt, eine Kopie zu erhalten
+
+dieser Software und zugehörigen Dokumentationsdateien (die „Software“) zu behandeln
+
+in der Software ohne Einschränkung, einschließlich, aber nicht beschränkt auf die Rechte
+
+zu verwenden, zu kopieren, zu modifizieren, zusammenzuführen, zu veröffentlichen, zu verteilen, unterzulizenzieren und/oder zu verkaufen
+
+Kopien der Software und Personen, denen die Software gehört, zu gestatten
+
+dazu eingerichtet werden, unter folgenden Bedingungen:
+
+
+
+Der obige Urheberrechtshinweis und dieser Genehmigungshinweis müssen in allen enthalten sein
+
+Kopien oder wesentliche Teile der Software.
+
+
+
+DIE SOFTWARE WIRD "WIE BESEHEN" BEREITGESTELLT, OHNE JEGLICHE GEWÄHRLEISTUNG, AUSDRÜCKLICH ODER
+
+STILLSCHWEIGEND, EINSCHLIESSLICH, ABER NICHT BESCHRÄNKT AUF DIE GEWÄHRLEISTUNG DER MARKTGÄNGIGKEIT,
+
+EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG VON RECHTEN DRITTER. IN KEINEM FALL DARF DAS
+
+AUTOREN ODER URHEBERRECHTSINHABER HAFTEN FÜR JEGLICHE ANSPRÜCHE, SCHÄDEN ODER ANDERE
+
+HAFTUNG, OB AUS VERTRAG, DELIKT ODER ANDERWEITIG, ENTSTEHEND AUS,
+
+AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER VERWENDUNG ODER ANDEREN HANDLUNGEN MIT DER
+
+SOFTWARE.
+
+### Kontaktieren Sie uns
+
+Bitte senden Sie eine E-Mail an lishifenging@outlook.com.
