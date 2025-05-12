@@ -35,7 +35,6 @@
  */
 
 #include "driver_pmsx003.h"
-#include <stdint.h>
 
 /**
  * @brief chip information definition
