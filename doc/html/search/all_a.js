@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['temperature_5fmax_113',['temperature_max',['../structpmsx003__info__s.html#a3366a5dce9b829e03c3d321c2b4df3f6',1,'pmsx003_info_s']]],
-  ['temperature_5fmax_114',['TEMPERATURE_MAX',['../driver__pmsx003_8c.html#a90c0b20d54005712fcc8cb01281360e9',1,'driver_pmsx003.c']]],
-  ['temperature_5fmin_115',['temperature_min',['../structpmsx003__info__s.html#a8f9dbe66ac0b66ebae0a36fcb4ba368e',1,'pmsx003_info_s']]],
-  ['temperature_5fmin_116',['TEMPERATURE_MIN',['../driver__pmsx003_8c.html#aab353db5bf4eb787f86a2080f609a551',1,'driver_pmsx003.c']]]
+  ['set_5fgpio_5fdeinit_0',['set_gpio_deinit',['../structpmsx003__handle__s.html#a681916974855337fed07ee5a7b3a0e7a',1,'pmsx003_handle_s']]],
+  ['set_5fgpio_5finit_1',['set_gpio_init',['../structpmsx003__handle__s.html#a5d86d3d26bdd2f21174b0c67dce551de',1,'pmsx003_handle_s']]],
+  ['set_5fgpio_5fwrite_2',['set_gpio_write',['../structpmsx003__handle__s.html#a73ecd01fa77eb7e1f8956d939a6055ad',1,'pmsx003_handle_s']]],
+  ['supply_5fvoltage_5fmax_3',['SUPPLY_VOLTAGE_MAX',['../driver__pmsx003_8c.html#a68eba8b601afe11f1b871d944976c035',1,'driver_pmsx003.c']]],
+  ['supply_5fvoltage_5fmax_5fv_4',['supply_voltage_max_v',['../structpmsx003__info__s.html#a3d2b12bcac7a85ea8646bff9debe8660',1,'pmsx003_info_s']]],
+  ['supply_5fvoltage_5fmin_5',['SUPPLY_VOLTAGE_MIN',['../driver__pmsx003_8c.html#aac8d8cbd899667d609787ef4cf37054d',1,'driver_pmsx003.c']]],
+  ['supply_5fvoltage_5fmin_5fv_6',['supply_voltage_min_v',['../structpmsx003__info__s.html#ad8bde6ddadaf43d951e62f3befb9d35a',1,'pmsx003_info_s']]]
 ];

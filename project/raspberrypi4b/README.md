@@ -117,6 +117,7 @@ find_package(pmsx003 REQUIRED)
    ```shell
    pmsx003 (-e sleep | --example=sleep)
    ```
+
 7. Run pmsx003 wake-up function.
 
    ```shell
