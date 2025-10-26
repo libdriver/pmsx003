@@ -10,7 +10,7 @@
 
 PMSX003 is a kind of digital and universal particle concentration sensor,which can be used to obtain the number of suspended particles in the air,i.e.the concentration of particles,and output them in the form of digital interface. This sensor can be inserted into variable instruments related to the concentration of suspended particles in the air or other environmental improvement equipments to provide correct concentration data in time.
 
-LibDriver PMSX003 is a full-featured driver of PMSX003 launched by LibDriver.It provides the function of air quality reading and other functions. LibDriver is MISRA compliant.
+LibDriver PMSX003 is a full-featured driver for PMSX003, launched by LibDriver.It provides air quality reading and additional features. LibDriver is MISRA compliant.
 
 ### Table of Contents
 

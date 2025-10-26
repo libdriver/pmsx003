@@ -78,6 +78,7 @@ We use '\n' to wrap lines.If your serial port assistant displays exceptions (e.g
    ```shell
    pmsx003 (-e sleep | --example=sleep)
    ```
+
 7. Run pmsx003 wake-up function.
 
    ```shell
