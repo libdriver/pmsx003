@@ -689,8 +689,10 @@ uint8_t pmsx003_wake_up(pmsx003_handle_t *handle)
 uint8_t pmsx003_read(pmsx003_handle_t *handle, pmsx003_data_t *data)
 {
     uint8_t res;
+    uint8_t j;
+    uint8_t done;
     uint8_t output[7];
-    uint8_t input[32];
+    uint8_t input[64];
     uint16_t len;
     
     if (handle == NULL)                                                                 /* check handle */
@@ -704,8 +706,8 @@ uint8_t pmsx003_read(pmsx003_handle_t *handle, pmsx003_data_t *data)
     
     if (handle->mode != 0)                                                              /* active mode */
     {
-        len = handle->uart_read(input, 32);                                             /* uart read */
-        if (len != 32)                                                                  /* check length */
+        len = handle->uart_read(input, 64);                                             /* uart read */
+        if (len != 64)                                                                  /* check length */
         {
             handle->debug_print("pmsx003: uart read failed.\n");                        /* uart read failed */
             
@@ -718,7 +720,38 @@ uint8_t pmsx003_read(pmsx003_handle_t *handle, pmsx003_data_t *data)
             
             return 1;                                                                   /* return error */
         }
-        res = a_pmsx003_parse_data(handle, input, data);                                /* parse data */
+        done = 0;                                                                       /* init 0 */
+        for (j = 0; j < 33; j++)                                                        /* loop all */
+        {
+            if ((input[j] == 0x42) && (input[j + 1] == 0x4D) && ((j + 31) < 64))        /* check frame */
+            {
+                uint8_t i;
+                uint16_t lrc;
+                uint16_t lrc_check;
+                
+                lrc = 0;                                                                /* init 0 */
+                for (i = 0; i < 30; i++)                                                /* add all */
+                {
+                    lrc += input[i + j];                                                /* sum */
+                }
+                lrc_check = ((uint16_t)input[30 + j] << 8) | input[31 + j];             /* get lrc */
+                if (lrc != lrc_check)                                                   /* check lrc */
+                {
+                    continue;                                                           /* continue */
+                }
+                done = 1;                                                               /* flag done */
+                
+                break;                                                                  /* break */
+            }
+        }
+        if (done != 1)                                                                  /* check done */
+        {
+            handle->debug_print("pmsx003: frame error.\n");                             /* frame error */
+            
+            return 4;                                                                   /* return error */
+        }
+        
+        res = a_pmsx003_parse_data(handle, input + j, data);                            /* parse data */
         if (res != 0)                                                                   /* check result */
         {
             handle->debug_print("pmsx003: frame error.\n");                             /* frame error */
