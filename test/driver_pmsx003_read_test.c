@@ -176,8 +176,8 @@ uint8_t pmsx003_read_test(uint32_t times)
     {
         pmsx003_data_t data;
         
-        /* delay 2000ms */
-        pmsx003_interface_delay_ms(2000);
+        /* delay 6000ms */
+        pmsx003_interface_delay_ms(6000);
         
         /* read */
         res = pmsx003_read(&gs_handle, &data);
