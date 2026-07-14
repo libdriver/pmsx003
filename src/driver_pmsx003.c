@@ -328,7 +328,7 @@ uint8_t pmsx003_init(pmsx003_handle_t *handle)
     handle->delay_ms(100);                                                  /* delay 100ms */
     if (handle->reset_gpio_write(0) != 0)                                   /* set low */
     {
-        handle->debug_print("pmsx003: set gpio write failed.\n");           /* set gpio write failed */
+        handle->debug_print("pmsx003: reset gpio write failed.\n");         /* reset gpio write failed */
         (void)handle->reset_gpio_deinit();                                  /* reset gpio deinit */
         (void)handle->set_gpio_deinit();                                    /* set gpio deinit */
         (void)handle->uart_deinit();                                        /* uart deinit */
@@ -338,7 +338,7 @@ uint8_t pmsx003_init(pmsx003_handle_t *handle)
     handle->delay_ms(100);                                                  /* delay 100ms */
     if (handle->reset_gpio_write(1) != 0)                                   /* set high */
     {
-        handle->debug_print("pmsx003: set gpio write failed.\n");           /* set gpio write failed */
+        handle->debug_print("pmsx003: reset gpio write failed.\n");         /* reset gpio write failed */
         (void)handle->reset_gpio_deinit();                                  /* reset gpio deinit */
         (void)handle->set_gpio_deinit();                                    /* set gpio deinit */
         (void)handle->uart_deinit();                                        /* uart deinit */
@@ -429,14 +429,14 @@ uint8_t pmsx003_reset(pmsx003_handle_t *handle)
     
     if (handle->reset_gpio_write(0) != 0)                                /* set low */
     {
-        handle->debug_print("pmsx003: set gpio write failed.\n");        /* set gpio write failed */
+        handle->debug_print("pmsx003: reset gpio write failed.\n");      /* reset gpio write failed */
         
         return 1;                                                        /* return error */
     }
     handle->delay_ms(100);                                               /* delay 100ms */
     if (handle->reset_gpio_write(1) != 0)                                /* set high */
     {
-        handle->debug_print("pmsx003: set gpio write failed.\n");        /* set gpio write failed */
+        handle->debug_print("pmsx003: reset gpio write failed.\n");      /* reset gpio write failed */
         
         return 1;                                                        /* return error */
     }
